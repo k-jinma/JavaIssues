@@ -1,0 +1,3 @@
+*.class
+# Visual Studio Code-specific files
+.vscode/
