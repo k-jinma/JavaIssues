@@ -1,40 +1,43 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Student {
-    private String name;
-    private Map<Subject, Integer> subjectGrades;
+    public String name;
+    public Map<Subject, Float> grades;
 
     public Student(String name) {
         this.name = name;
-        this.subjectGrades = new HashMap<>();
+        this.grades = new HashMap<>();
+        assignRandomGrades();
     }
 
-    public void addSubject(Subject subject) {
-        subjectGrades.put(subject, 0); // 初期点数は0として追加
+    public void setGrade(Subject subject, float grade) {
+        grades.put(subject, grade);
     }
 
-    public void addSubjectGrade(Subject subject, int grade) {
-        if (subjectGrades.containsKey(subject)) {
-            subjectGrades.put(subject, grade);
-        } else {
-            System.out.println("Error: 科目が見つかりませんでした。");
+    public float getGrade(Subject subject) {
+        return grades.getOrDefault(subject, 0.0f);
+    }
+
+    public float calculateAverageGrade() {
+        float total = 0;
+        int count = 0;
+        for (Float grade : grades.values()) {
+            total += grade;
+            count++;
         }
+        return count == 0 ? 0 : total / count;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getSubjectGrade(Subject subject) {
-        return subjectGrades.getOrDefault(subject, 0);
-    }
-
-    public double getAverage() {
-        double sum = 0;
-        for (int grade : subjectGrades.values()) {
-            sum += grade;
+    public void assignRandomGrades() {
+        Random random = new Random();
+        for (Subject subject : Subject.SUBJECTS.values()) {
+            setGrade(subject, random.nextFloat() * 100);
         }
-        return sum / subjectGrades.size();
     }
 }
