@@ -1,26 +1,45 @@
-public enum Subject {
-    ENGLISH("英語"),
-    MATH("算数"),
-    JAPANESE("国語"),
-    SCIENCE("理科"),
-    SOCIAL_STUDIES("社会");
+import java.util.HashMap;
+import java.util.Map;
 
-    private String name;
+public class Subject {
+    public static final Map<String, Subject> SUBJECTS = new HashMap<>();
+    public final String name;
 
-    Subject(String name) {
+    public Subject(String name) {
         this.name = name;
+        SUBJECTS.put(name, this);
     }
 
     public String getName() {
         return name;
     }
 
-    public static Subject fromName(String name) {
-        for (Subject subject : values()) {
-            if (subject.name.equals(name)) {
-                return subject;
-            }
-        }
-        throw new IllegalArgumentException("Invalid subject name: " + name);
+    public static Subject getSubject(String name) {
+        return SUBJECTS.get(name);
+    }
+
+    // 定義済みの科目
+    public static final Subject MATH = new Subject("算数");
+    public static final Subject SCIENCE = new Subject("理科");
+    public static final Subject ENGLISH = new Subject("英語");
+    public static final Subject HISTORY = new Subject("社会");
+    public static final Subject JAPANESE = new Subject("国語");
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Subject subject = (Subject) obj;
+        return name.equals(subject.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

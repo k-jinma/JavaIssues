@@ -2,35 +2,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Student {
-    private String name;
-    private Map<Subject, Integer> grades;
+    public String name;
+    public Map<Subject, Integer> grades;
 
     public Student(String name) {
         this.name = name;
-        this.grades = new HashMap<>();
+        grades = new HashMap<>();
     }
 
     public String getName() {
         return name;
     }
 
-    public void addSubjectGrade(Subject subject, int grade) {
+    public void setGrade(Subject subject, int grade) {
         grades.put(subject, grade);
     }
 
-    public Integer getSubjectGrade(Subject subject) {
-        return grades.get(subject);
+    public int getGrade(Subject subject) {
+        return grades.getOrDefault(subject, 0);
     }
 
-    public float getAverage() {
-        float sum = 0;
-        for (int grade : grades.values()) {
-            sum += grade;
-        }
-        return grades.size() == 0 ? 0 : sum / grades.size();
-    }
-
-    public int getTotalSubjects() {
-        return grades.size();
+    public Map<Subject, Integer> getGrades() {
+        return grades;
     }
 }

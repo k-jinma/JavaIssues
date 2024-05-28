@@ -1,71 +1,82 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GradeBook {
-    private List<Student> students;
+    public List<Student> students;
 
     public GradeBook() {
-        this.students = new ArrayList<>();
+        students = new ArrayList<>();
     }
 
     public void addStudent(Student student) {
-        this.students.add(student);
+        students.add(student);
     }
 
-    public float getAverage() {
-        float totalSum = 0;
-        int totalGrades = 0;
+    public List<Student> getStudents() {
+        return students;
+    }
 
-        for (Student student : students) {
-            totalSum += student.getAverage() * student.getTotalSubjects();
-            totalGrades += student.getTotalSubjects();
+    public void loadGradesFromCSV(String fileName) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                Student student = new Student(values[0]);
+                for (int i = 1; i < values.length; i += 2) {
+                    Subject subject = Subject.getSubject(values[i]);
+                    int grade = Integer.parseInt(values[i + 1]);
+                    student.setGrade(subject, grade);
+                }
+                students.add(student);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        return totalGrades == 0 ? 0 : totalSum / totalGrades;
     }
 
-    public float getSubjectAverage(Subject subject) {
-        float totalSum = 0;
-        int totalGrades = 0;
-
+    public void printSubjectStatistics(Subject subject) {
+        int total = 0;
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        String maxScorer = "";
+        String minScorer = "";
+        
         for (Student student : students) {
-            Integer grade = student.getSubjectGrade(subject);
-            if (grade != null) {
-                totalSum += grade;
-                totalGrades++;
+            int grade = student.getGrade(subject);
+            total += grade;
+            if (grade > max) {
+                max = grade;
+                maxScorer = student.getName();
+            }
+            if (grade < min) {
+                min = grade;
+                minScorer = student.getName();
             }
         }
-
-        return totalGrades == 0 ? 0 : totalSum / totalGrades;
+        
+        double average = (double) total / students.size();
+        System.out.println(subject.getName() + "成績平均 : " + average);
+        System.out.println(subject.getName() + "最高成績 : " + max);
+        System.out.println(subject.getName() + "最高成績得点者 : " + maxScorer);
+        System.out.println(subject.getName() + "最低成績 : " + min);
+        System.out.println(subject.getName() + "最低成績得点者 : " + minScorer);
     }
 
-    public Student getTopStudentInSubject(Subject subject) {
-        Student topStudent = null;
-        int highestGrade = -1;
-
+    public void printOverallAverage() {
+        int total = 0;
+        int count = 0;
+        
         for (Student student : students) {
-            Integer grade = student.getSubjectGrade(subject);
-            if (grade != null && grade > highestGrade) {
-                highestGrade = grade;
-                topStudent = student;
+            for (int grade : student.getGrades().values()) {
+                total += grade;
+                count++;
             }
         }
-
-        return topStudent;
-    }
-
-    public Student getBottomStudentInSubject(Subject subject) {
-        Student bottomStudent = null;
-        int lowestGrade = 101;
-
-        for (Student student : students) {
-            Integer grade = student.getSubjectGrade(subject);
-            if (grade != null && grade < lowestGrade) {
-                lowestGrade = grade;
-                bottomStudent = student;
-            }
-        }
-
-        return bottomStudent;
+        
+        double average = (double) total / count;
+        System.out.println("成績平均 : " + average);
     }
 }
