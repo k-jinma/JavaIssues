@@ -2,7 +2,7 @@ import java.util.List;
 
 // CSVReaderが取り出した情報をCSVItemに変換するクラス
 public class Reader {
-    private List<CSVItem> items;
+    public List<CSVItem> items;
 
     public Reader(List<CSVItem> items) {
         this.items = items;
@@ -21,12 +21,11 @@ public class Reader {
     }
 
     public boolean isKatakana(String s) {
-        // s = s.replaceAll("[\n\r]", ""); // 改行文字を削除
-        // for (char c : s.toCharArray()) {
-        //     if (c < '\u30A0' || c > '\u30FF') {
-        //         return false;
-        //     }
-        // }
+        for (char c : s.toCharArray()) {
+            if (c < '\u30A0' || c > '\u30FF') {
+                return false;
+            }
+        }
         return true;
     }
     
