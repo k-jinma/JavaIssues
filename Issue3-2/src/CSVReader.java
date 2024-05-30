@@ -12,9 +12,10 @@ public class CSVReader {
         this.filename = filename;
     }
 
-    public List<CSVItem> readCSV() throws IOException {
+    public List<CSVItem> readCSV() {
         List<CSVItem> items = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filename));
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -24,6 +25,8 @@ public class CSVReader {
                     throw new IOException("Invalid CSV format");
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return items;
     }
