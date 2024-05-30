@@ -1,3 +1,3 @@
 interface Shape {
-    double getArea();
+    public double getArea();
 }

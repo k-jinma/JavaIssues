@@ -1,7 +1,8 @@
 class Triangle implements Shape {
-    private double base;
-    private double height;
+    public double base;
+    public double height;
     
+    //コンストラクタ
     Triangle(double base, double height) {
         this.base = base;
         this.height = height;
