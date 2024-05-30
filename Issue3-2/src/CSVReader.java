@@ -6,7 +6,7 @@ import java.util.List;
 
 // CSVから動物の名前と学名を取り出すクラス
 public class CSVReader {
-    private String filename;
+    public String filename;
 
     public CSVReader(String filename) {
         this.filename = filename;
