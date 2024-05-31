@@ -50,7 +50,7 @@ public class Archiver {
         }
     }
 
-    private File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
+    public File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
         String destDirPath = destinationDir.getCanonicalPath();
         String destFilePath = destFile.getCanonicalPath();
